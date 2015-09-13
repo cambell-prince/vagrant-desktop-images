@@ -4,12 +4,17 @@
 Vagrant.configure("2") do |config|
 
   # Quantal is broken
-  [:precise, :raring, :saucy, :trusty].each do |release|
-    config.vm.define "#{release}-desktop-i386" do |conf|
-      conf.vm.box = "#{release}-cloud-i386"
-      conf.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/#{release}/current/#{release}-server-cloudimg-i386-vagrant-disk1.box"
-    end
-    config.vm.define "#{release}-desktop-amd64" do |conf|
+  # [:precise, :raring, :saucy, :trusty].each do |release|
+  [:trusty].each do |release|
+    #config.vm.define "#{release}-desktop-i386" do |conf|
+    #  conf.vm.box = "#{release}-cloud-i386"
+    #  conf.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/#{release}/current/#{release}-server-cloudimg-i386-vagrant-disk1.box"
+    #end
+    #config.vm.define "#{release}-desktop-amd64" do |conf|
+    #  conf.vm.box = "#{release}-cloud-amd64"
+    #  conf.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/#{release}/current/#{release}-server-cloudimg-amd64-vagrant-disk1.box"
+    #end
+    config.vm.define "#{release}-lxde-amd64" do |conf|
       conf.vm.box = "#{release}-cloud-amd64"
       conf.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/#{release}/current/#{release}-server-cloudimg-amd64-vagrant-disk1.box"
     end
@@ -20,9 +25,10 @@ Vagrant.configure("2") do |config|
     if ENV.key? "VAGRANT_GUI"
       vb.gui = true
     end
+    vb.gui = true
     vb.customize ["modifyvm", :id, "--memory", 1024]
-    #vb.customize ["modifyvm", :id, "--vram", 64]
-    #vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
+    vb.customize ["modifyvm", :id, "--vram", 64]
+    vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
   end
 
   # Automatically use local apt-cacher-ng if available
