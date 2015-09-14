@@ -57,6 +57,7 @@ class lxde_desktop {
     group   => root,
     content => "[SeatDefaults]\ngreeter-session=lightdm-greeter\nuser-session=Lubuntu\nautologin-user=vagrant\n"
   }
+  # TODO Add package for pam_kwallet.so or similar that is missing.
   service { 'lightdm':
     require => File['lightdm.conf'],
     ensure  => running,
@@ -82,7 +83,7 @@ class unity_screensaver_settings {
       'disable screensaver when idle':
           command   => "/bin/sh -c 'DISPLAY=:0 dconf write /org/gnome/desktop/screensaver/idle-activation-enabled false'",
           unless    => "/bin/sh -c 'test $(DISPLAY=:0 dconf read /org/gnome/desktop/screensaver/idle-activation-enabled) = false'",
-          require   => [Package['dconf-tools', 'lubuntu-desktop'], Service['lightdm']],
+          require   => [Package['dconf-tools', 'ubuntu-desktop'], Service['lightdm']],
           user      => 'vagrant',
           tries     => 3,
           try_sleep => 5,
@@ -90,7 +91,7 @@ class unity_screensaver_settings {
       'disable screensaver lock':
           command   => "/bin/sh -c 'DISPLAY=:0 dconf write /org/gnome/desktop/screensaver/lock-enabled false'",
           unless    => "/bin/sh -c 'test $(DISPLAY=:0 dconf read /org/gnome/desktop/screensaver/lock-enabled) = false'",
-          require   => [Package['dconf-tools', 'lubuntu-desktop'], Service['lightdm']],
+          require   => [Package['dconf-tools', 'ubuntu-desktop'], Service['lightdm']],
           user      => 'vagrant',
           tries     => 3,
           try_sleep => 5,
@@ -98,7 +99,7 @@ class unity_screensaver_settings {
       'disable screensaver lock after suspend':
           command   => "/bin/sh -c 'DISPLAY=:0 dconf write /org/gnome/desktop/screensaver/ubuntu-lock-on-suspend false'",
           unless    => "/bin/sh -c 'test $(DISPLAY=:0 dconf read /org/gnome/desktop/screensaver/ubuntu-lock-on-suspend) = false'",
-          require   => [Package['dconf-tools', 'lubuntu-desktop'], Service['lightdm']],
+          require   => [Package['dconf-tools', 'ubuntu-desktop'], Service['lightdm']],
           user      => 'vagrant',
           tries     => 3,
           try_sleep => 5,
@@ -106,7 +107,7 @@ class unity_screensaver_settings {
        'set idle delay to zero':
           command   => "/bin/sh -c 'DISPLAY=:0 dconf write /org/gnome/session/idle-delay 0'",
           unless    => "/bin/sh -c 'test $(DISPLAY=:0 dconf read /org/gnome/session/idle-delay) = 0'",
-          require   => [Package['dconf-tools', 'lubuntu-desktop'], Service['lightdm']],
+          require   => [Package['dconf-tools', 'ubuntu-desktop'], Service['lightdm']],
           user      => 'vagrant',
           tries     => 3,
           try_sleep => 5,
@@ -114,7 +115,7 @@ class unity_screensaver_settings {
        'set idle delay to zero (2)':
           command   => "/bin/sh -c 'DISPLAY=:0 dconf write /org/gnome/desktop/session/idle-delay 0'",
           unless    => "/bin/sh -c 'test $(DISPLAY=:0 dconf read /org/gnome/desktop/session/idle-delay) = 0'",
-          require   => [Package['dconf-tools', 'lubuntu-desktop'], Service['lightdm']],
+          require   => [Package['dconf-tools', 'ubuntu-desktop'], Service['lightdm']],
           user      => 'vagrant',
           tries     => 3,
           try_sleep => 5,
@@ -122,7 +123,7 @@ class unity_screensaver_settings {
        'disable monitor sleep on AC':
           command   => "/bin/sh -c 'DISPLAY=:0 dconf write /org/gnome/settings-daemon/plugins/power/sleep-display-ac 0'",
           unless    => "/bin/sh -c 'test $(DISPLAY=:0 dconf read /org/gnome/settings-daemon/plugins/power/sleep-display-ac) = 0'",
-          require   => [Package['dconf-tools', 'lubuntu-desktop'], Service['lightdm']],
+          require   => [Package['dconf-tools', 'ubuntu-desktop'], Service['lightdm']],
           user      => 'vagrant',
           tries     => 3,
           try_sleep => 5,
@@ -130,7 +131,7 @@ class unity_screensaver_settings {
        'disable monitor sleep on battery':
           command   => "/bin/sh -c 'DISPLAY=:0 dconf write /org/gnome/settings-daemon/plugins/power/sleep-display-battery 0'",
           unless    => "/bin/sh -c 'test $(DISPLAY=:0 dconf read /org/gnome/settings-daemon/plugins/power/sleep-display-battery) = 0'",
-          require   => [Package['dconf-tools', 'lubuntu-desktop'], Service['lightdm']],
+          require   => [Package['dconf-tools', 'ubuntu-desktop'], Service['lightdm']],
           user      => 'vagrant',
           tries     => 3,
           try_sleep => 5,
@@ -138,7 +139,7 @@ class unity_screensaver_settings {
        'disable remind-reload query':
           command   => "/bin/sh -c 'DISPLAY=:0 dconf write /apps/update-manager/remind-reload false'",
           unless    => "/bin/sh -c 'test $(DISPLAY=:0 dconf read /apps/update-manager/remind-reload) = false'",
-          require   => [Package['dconf-tools', 'lubuntu-desktop'], Service['lightdm']],
+          require   => [Package['dconf-tools', 'ubuntu-desktop'], Service['lightdm']],
           user      => 'vagrant',
           tries     => 3,
           try_sleep => 5,
@@ -151,5 +152,6 @@ include grub
 include virtualbox_x11
 include lxde_desktop
 include lxde_screensaver_settings
+# TODO Add a minimize section. Remove linux headers juju, juju-core, unused linux image etc
 # include unity_desktop
 # include unity_screensaver_settings
